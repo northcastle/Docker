@@ -1,0 +1,24 @@
+1.阿里云登陆地址 
+  https://account.aliyun.com/
+  
+2.可以使用已经存在的阿里账号直接登陆：例如支付宝账号，淘宝账号
+
+3.登陆之后，获取自己的专属的镜像加速器 
+  左侧最后一个选项:镜像加速器 ----》 右侧即可获取加速器内容
+  格式如下 ： "https://****.mirror.aliyuncs.com"
+  
+4.配置镜像加速器
+  4.1 进入到 /etc/docker 目录
+      $sudo cd /etc/docker
+      
+  4.2 创建daemon.json 文件，并添加内容
+      $vim daemon.json
+      {
+        "registry-mirrors": ["https://*****.mirror.aliyuncs.com"]
+      }
+      
+ 5.重新加载daemon.json文件
+   $sudo systemctl daemon-reload
+   
+ 6.重新启动Docker
+   $sudo systemctl restart docker
