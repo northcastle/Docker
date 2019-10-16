@@ -1,0 +1,78 @@
+此步骤根据docker官方手册与博客中的经验测试成功。
+
+步骤如下 : 
+
+1.卸载以前的docker：
+  $sudo yum remove docker \
+                   docker-common \
+                   docker-selinux \
+                   docker-engine
+                   
+2.安装需要的软件包：
+   2.1  yum-utils 提供 yum-config-manager 功能
+   2.2  另外两个是devicemapper驱动依赖
+   
+   $sudo yum install -y yum-utils \
+                        device-mapper-persistent-data \
+                        lvm2
+                        
+3.设置yum源
+    3.1 设置官网给出的yum源，国外的，容易断连，不建议使用
+        $sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+    3.2 使用国内的阿里源，速度快，稳定，建议使用
+        $sudo yum-config-manager --add-repo https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+        
+        
+ 4.安装Docker社区版，（免费）
+    4.1 直接安装docker最新版本
+        $sudo yum install  docker-ce
+    4.2 查看docker版本，并进行选择安装
+        $sudo yum list docker-ce --showduplicates | sort -r
+        $sudo yum install docker-ce-[版本号]
+        
+ 5.启动Docker
+   $sudo systemctl start docker
+   
+ 6.把Docker加入开机启动项
+   $sudo systemctl enable docker
+   
+ 7.验证Docker安装成功 : 执行命令可以看到docker的版本号
+   $sudo docker versioin 
+   
+   
+#以下是docker的版本信息   
+[root@NorthCastle-PC /]# docker version
+Client: Docker Engine - Community
+ Version:           19.03.3
+ API version:       1.40
+ Go version:        go1.12.10
+ Git commit:        a872fc2f86
+ Built:             Tue Oct  8 00:58:10 2019
+ OS/Arch:           linux/amd64
+ Experimental:      false
+
+Server: Docker Engine - Community
+ Engine:
+  Version:          19.03.3
+  API version:      1.40 (minimum version 1.12)
+  Go version:       go1.12.10
+  Git commit:       a872fc2f86
+  Built:            Tue Oct  8 00:56:46 2019
+  OS/Arch:          linux/amd64
+  Experimental:     false
+ containerd:
+  Version:          1.2.6
+  GitCommit:        894b81a4b802e4eb2a91d1ce216b8817763c29fb
+ runc:
+  Version:          1.0.0-rc8
+  GitCommit:        425e105d5a03fabd737a126ad93d62a9eeede87f
+ docker-init:
+  Version:          0.18.0
+  GitCommit:        fec3683
+
+   
+   
+   
+   
+ 
+ 
