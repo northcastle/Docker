@@ -2,6 +2,9 @@
 
 步骤如下 : 
 
+0.查看自己的内核版本：
+  $sudo cat /etc/redhat-release
+
 1.卸载以前的docker：
   $sudo yum remove docker \
                    docker-common \
