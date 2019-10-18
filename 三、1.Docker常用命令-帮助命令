@@ -1,0 +1,7 @@
+三个帮助命令
+
+1.docker version : 查看docker的版本信息
+
+2.docker info : 查看docker的详细信息
+
+3.docker --help : docker的帮助命令，可以用来查看命令帮助手册
