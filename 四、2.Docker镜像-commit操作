@@ -1,0 +1,10 @@
+1.作用：提交容器副本，根据容器创建一个新的镜像。
+
+2.命令：$docker commit -m "提交的描述信息" -a="作者" containerId  targetImageName[:tag]
+
+3.实例：$docker commit -m "whc的tomcat" -a="whc"  容器ID  whc/mytomcat01:1.0
+
+4.查看镜像: $docker images 可以看到新的镜像名
+
+5.使用新的镜像创建一个容器: $docker run -it -p 8083:8080 ImageId:1.0
+
