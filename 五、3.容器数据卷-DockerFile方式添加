@@ -1,0 +1,38 @@
+1.DockerFile 是镜像的一个描述文件，有自己的一套语法规则。
+
+2.出于可移植性和分享的考虑，用 -v 命令参数 的方式不能在 DockerFile 中实现。
+  由于宿主机目录是依赖于特定的宿主机的，并不能保证所有的宿主机上面都存在这样的特定的目录。
+  
+3.操作步骤 ： 
+     3.1 编写DockerFile(在宿主机上面编写)
+        $cd /home/mydocker
+        $vim dockerfile1
+          FROM centos
+          #下面的命令用来添加数据卷,可以写多个
+          VOLUME ["/dataVolumeContainer1","/dataVolumeContainer2"]
+          CMD echo "finished ---------------success!"
+          CMD /bin/bash
+          
+     3.2 docker build 生成一个新的镜像模板
+         $sudo docker build -f /home/mydocker/dockerfile1 -t whc/centos .
+         OPTION:
+               3.2.1 -f 指明DockerFile文件
+               3.2.2 -t 指明镜像的名称
+               3.2.3 .  最后的这个点，很关键，指明这个是在当前目录下（*****）
+               
+     3.3 docker images 查看生成的镜像 : whc/centos
+          $sudo docker images
+
+     3.4 docker run 启动一个容器
+         $sudo docker run -it whc/centos 
+         
+     3.5 进入到容器中，并且可以看到跟目录下存在两个目录 
+         ["/dataVolumeContainer1","/dataVolumeContainer2"]
+         
+     3.6 docker inspect containerId 也可以查看默认的宿主机
+          在Mounts : source
+          
+4.Docker在挂在目录的时候，Docker访问出现 cannot open directory : Permission denied
+  解决  ： 在挂在目录后面添加参数 --privileged=true即可
+  
+  $docker run -it -v /a:/b --privileged=true centos
