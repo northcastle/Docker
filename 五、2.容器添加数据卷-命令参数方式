@@ -1,0 +1,18 @@
+1.命令 ： $sudo docker run -it -v 宿主机绝对路径目录：容器内容的目录  镜像名
+
+2.实例 ： $sudo docker run -it -v /home/mydocker/mycentos/files : /usr/local/logs centos
+
+3.查看两个目录挂载成功：
+  3.1 查看宿主机的电脑目录，会发现多了 /home/mydocker/mycentos/files 目录
+  3.2 查看容器内的目录，会发现多了 /usr/local/logs 目录
+  【注】 $sudo docker inspect containerId/containerName ,可以查看容器的详细配置，也可以看到容器内的详细的配置
+  
+4.修改任意一个目录下的内容，会发现另一个目录内的内容也会跟着发生变化！***
+
+5.容器停止并退出后，主机修改对应的目录下的内容，容器下次启动时，会自动同步主机内修改的内容！***
+
+6.带权限的命令 ： 
+  $sudo docker run -it -v /home/mydocker/mycentos/files : /usr/local/logs centos:ro centos
+  [:ro] read only ,只读的模式，容器内的目录没有写操作权限
+  
+  
