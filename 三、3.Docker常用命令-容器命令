@@ -1,0 +1,44 @@
+根本前提 ： 有镜像才能创建容器！
+
+（以一个centos镜像为例，进行容器的创建）
+$docker pull centos
+
+1.启动一个容器（***主流命令之一***）
+  $docker run [OPTIONS] ImageName [COMMANT] [ARGS...]
+  OPTIONS : 
+          1.1 --name="名称" : 为容器指定一个自定义的名称 : docker run --name="mycentos1" centos
+          1.2 -d : 后台运行容器，并返回容器ID，即创建一个守护式容器 : docker run --name="mycentos2" -d centos
+          1.3 -i : 以交互模式启动容器（**） : docker run -i --name="mycentos3" centos
+          1.4 -t : 为容器重新分配一个伪输入终端(**) : docker run -it --name="mycentos4" centos
+          1.5 -P : 随机映射端口 : docker run -it -P --name="mytomcat1" tomcat (大写的P)
+          1.6 -p : 指定映射端口，有四种格式 （小写的p）
+                 1.6.1 ip:hostPort:containerPort
+                 1.6.2 ip::containerPort
+                 1.6.3 hostPort:containerPort (***) : docker run -it -p 8989:8080 --name="mytomcat2" tomcat
+                 1.6.4 containerPort
+                
+2.查看docker的容器
+  $docker ps [OPTION]
+  OPTIONS : 
+          2.1 -a : 显示所有的容器=正在运行的容器+历史上运行过的容器 : docker ps -a
+          2.2 -l : 只显示上一次运行过得容器 : docker ps -l
+          2.3 -n : 显示最近创建的n个容器  : docker ps -n 10
+          2.4 -q : 静默模式，只显示容器id : docker ps -q
+          2.5 --no-trunc : 不截断输出（和前面的一样） : docker ps --no-trunc
+          
+3.退出容器
+  3.1 exit : 停止容器并且退出
+  3.2 ctrl+p+q : 不停止容器并且退出 （还可以再进入到容器中，后面有讲）
+ 
+ 
+4.启动容器  docker start containerId/containerName
+
+5.停止容器  docker stop containerId/containerName
+
+6.重启容器  docker restart containerId/containerName
+
+7.强制停止 docker kill containerId/containerName
+
+8.删除容器
+  8.1 删除一个容器 docker rm containerId/containerName
+  8.2 删除多个容器 docker rm -f $(docker ps  -a -q) (引用后面的命令的返回值)
