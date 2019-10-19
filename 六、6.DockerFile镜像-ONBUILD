@@ -1,0 +1,21 @@
+1.父镜像
+  $vim dockerfilefather
+  
+  FROM centos
+  ONBUILD RUN echo "This is father onbuild-------------------------------"
+  
+  $docker build -f dockerfilefather -t centosfather .
+  
+  
+2.子镜像
+   $vim dockerfileson
+   
+   #子镜像继承自父镜像，这样在构建的时候，就会触发父镜像的ONBUILD 命令
+   FROM centosfather
+   
+   RUN echo "This is son docker ++++++++++++++++++"
+   
+   ...
+   
+   $docker build -f dockerfileson -t centosson.
+   (在构建的过程中会看到有“"This is father onbuild-------------------------------"” 信息的打印，证明触发了 父镜像的ONBUILD 指令！)
