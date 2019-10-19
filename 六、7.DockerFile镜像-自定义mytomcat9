@@ -1,0 +1,78 @@
+自定义镜像mytomcat9
+
+1.前期准备
+  1.1 新建一个文件夹 
+      $mkdir -p /home/whc/mydockertomcat
+      
+  1.2 在上述目录下 新建文件用于复制用  
+      $touch c.txt
+     
+  1.3 将准备好的jdk和tomcat 的安装压缩包复制到上述目录下
+       jdk-8u231-linux-x64.tar.gz
+       apache-tomcat-8.5.47.tar.gz
+       
+ 2.编写DockerFile文件
+   $vim dockerfiletomcat
+   
+   #基础镜像
+   FROM centos
+   
+   #镜像的作者信息
+   MAINTAINER whc<whc@123.com>
+   
+   #把当前上下文的c.txt文件拷贝到容器的/usr/local下，并重命名为 container.txt,如果不想重命名，可以只写到目录/usr/local部分
+   COPY c.txt /usr/local/container.txt
+   
+   #把JAVA 与Tomcat 添加到容器中
+   ADD jdk-8u231-linux-x64.tar.gz /usr/local
+   ADD apache-tomcat-8.5.47.tar.gz /usr/local
+   
+   #安装vim 编辑器
+   RUN yum install -y vim
+   
+   #设置一个环境变量
+   ENV MYPATH /usr/local
+   
+   #设置登陆后的默认的目录位置，引用上面定义的环境变量
+   WORKDIR $MYPATH
+   
+   #配置java与tomcat的环境变量
+   ENV JAVA_HOME /usr/local/jdk1.8.0_231
+   ENV CLASSPATH $JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
+   
+   ENV CATALINA_HOME /usr/local/apache-tomcat-8.5.47
+   ENV CATALINA_BASE /usr/local/apache-tomcat-8.5.47
+   
+   ENV PATH $PATH:$JAVA_HOME/bin:$CATALINA_HOME/lib:$CATALINA_HOME/bin
+   
+   #设置容器运行时的监听端口
+   EXPOSE 8080
+   
+   #启动时运行tomcat的命令，三种格式都可以
+   #ENTRYPOINT ["/usr/local/apache-tomcat-8.5.47/bin/startup.sh"]
+   #CMD ["/usr/local/apache-tomcat-8.5.47/bin/catalina.sh","run"]
+   CMD /usr/local/apache-tomcat-8.5.47/bin/startup.sh && tail -F /usr/local/apache-tomcat-8.5.47/bin/logs/catalina.out
+   
+2.3 构建镜像 
+    $docker build -f dockerfiletomcat -t mytomcat9:1.0 .
+    (因为需要解压两个压缩包，所以可能时间上会久一点)
+    
+2.4 查看镜像
+    $docker images
+    
+2.5 启动容器 (下面时常用命令的集合)
+    $docker run -d \
+                -p 8081:8080 \
+                --name="mytomcat9" \
+                -v /home/whc/mydocker/tomcat9/test:/usr/local/apache-tomcat-8.5.47/webapps/test \
+                -v /home/whc/mydocker/tomcat9/logs:/usr/local/apache-tomcat-8.5.47/logs
+                --privileged=true
+                whctomcat9
+                
+ 2.6 验证启动成功 ： 在你的window上打开浏览器，访问一下 是否可以打开主页，即可。
+ 
+ 
+ 我自辉煌，天生骄傲！
+    
+   
+   
