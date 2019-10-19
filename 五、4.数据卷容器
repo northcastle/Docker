@@ -1,0 +1,21 @@
+1.命名的容器挂载数据卷。
+2.其他的容器通过挂载这个（父容器）实现数据共享。
+  挂载数据卷的容器，称之为数据卷容器。
+
+3.操作步骤 ： 
+  3.1 启动一个新容器（挂载一个数据卷） ：
+      $sudo docker run -it --name="doc1" -v /home/whc/mydocker/datas:/usr/local/logs centos
+  
+  3.2 在doc1容器的logs目录下创建一个hello.txt文件
+  
+  3.3 启动另外两个容器，继承自 doc1
+      $sudo docker run -it --name="doc2" --volumes-from doc1 centos
+      $sudo docker run -it --name="doc3" --volumes-from doc1 centos
+      
+  3.4 可以查看doc2和doc3两个容器中的logs目录下，也应该存在 hello.txt文件 ： 实现了容器之间的数据共享
+  
+  3.5 无论修改哪一个容器内的数据，其他的容器内的数据都会得到修改。
+  
+4. 结论 ： 容器之间配置信息的传递，数据卷的生命周期一致持续到没有容器使用它为止。
+  
+  
