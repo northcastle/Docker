@@ -1,0 +1,24 @@
+1.DockerFile是用来构建Docker镜像的构建文件，是由一系列命令和参数构成的脚本。
+
+2.DockerFile 文件的基础知识 
+  2.1 每条保留字指令都必须为大写字母，且后面要跟随至少一个参数；
+  2.2 指令按照从上到下的顺序执行；
+  2.3 #表示注释；
+  2.4 每条指令都会创建一个新的镜像层，并对镜像进行提交。
+  
+3.Docker执行DockerFile的大致流程
+  3.1 docker从基础镜像运行一个容器；
+  3.2 执行一条指令并对容器做出修改；
+  3.3 执行类似 docker commit 的操作，提交一个新的镜像层；
+  3.4 docker再基于刚提交的镜像运行一个容器；
+  3.5 执行dockerFile 中的下一条指令直到所有指令都执行完成。
+  
+4.小总结
+  从应用软件的角度来看:
+    4.1 DockerFile是软件的原材料；
+    4.2 Docker镜像是软件的交付品；
+    4.3 Docker容器则可以认为是软件的运行态。
+  DockerFile面向开发，Docker镜像成为交付标准，Docker容器则涉及部署与运维，三者缺一不可，合力充当Docker体系的基石。
+  
+5.过程：
+  DockerFile ----docker build----> Docker Image ----docker run------> Docker Container
