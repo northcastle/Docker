@@ -1,0 +1,5 @@
+Base镜像  ： Docker Hub 中99%的镜像都是通过在base镜像中安装和配置需要的软件构建出来的。
+
+FROM scratch
+
+就是上面这一个
