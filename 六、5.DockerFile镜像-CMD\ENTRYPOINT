@@ -1,0 +1,45 @@
+CMD指令 和 ENTRYPOINT 指令
+相同点 ： 都是指定一个容器启动时要运行的命令。
+
+1.CMD 指令： 
+   1.1 dockerfile 中可以有多个CMD指令，但只有最后一个生效；
+   1.2 CMD 会被docker run 之后的参数取代。
+   
+   【以Tomcat为例】
+     【正常启动】 $docker run -it -p 8081:8080 --name="tomcat1" tomcat
+                 使用此命令启动，可以看到控制台打印tomcat的日志，并且tomcat正常启动，可以访问
+                 
+     【带参数启动】 $docker run -it -p 8081:8080 --name="tomcat2" tomcat ls -l
+                  在命令的最后追加了 ls -l 命令，此时 会打印 ls -l 命令的返回结果，并且tomcat不会启动！
+                  因此 $docker ps 并不会看到tomcat 的正在运行的容器！
+                  
+                  
+2.ENTRYPOINT 指令：
+   docker run 之后的参数会被当做新的参数传递给ENTRYPOINT,之后，形成新的命令你个组合。
+   
+   【案例】
+         2.1 编写DockerFile文件
+             $vim dockerfile2
+             
+             #基础镜像
+             FROM centos
+             #安装curl工具包，可以用来执行culr命令查询具体的网站返回值
+             RUN yum install -y curl
+             #执行命令 curl -s https://ip.cn (这是一个查询自己ip的位置，执行命令会返回自己的ip的信息)
+             ENTRYPOINT ["curl","-s","https://ip.cn"]
+             
+         2.2 构建镜像：
+             $docker build -f dockerfile2 -t mycentosip:1.0 .
+             
+         2.3 运行容器1 :
+             $docker run -it --name="myip1" mycentosip:1.0
+             会看到有自己的ip被返回回来，因为，在运行容器时执行了命令 : curl -s https://ip.cn  
+             
+         2.4 运行容器2 ：
+             $docker run -it --name="myip2" mycentosop:1.0 -i
+             在命令的最后追加了-i参数，表示希望显示http头信息，
+             因此，实际实行的命令就是  curl -s -i  https://ip.cn  ==> 在文件命令中追加新的命令形成新的命令组合。
+             
+             
+  
+
