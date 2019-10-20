@@ -1,0 +1,37 @@
+1.登陆阿里云网站
+  https://www.aliyun.com
+  
+2.产品中找到容器镜像服务-->进入管理控制台
+
+3.创建命名空间 northcastle
+
+4.创建镜像仓库 whcdockerimages
+
+5.准备好自己本地的docker镜像
+
+6.将docker镜像push到阿里云的仓库上面（在仓库中可以看到教程）
+  6.1 命令登陆阿里云 （这个用户名就是我自己的用户名）
+      $ sudo docker login --username=northcastle registry.cn-hangzhou.aliyuncs.com
+      执行命令之后需要输入密码，这个密码就是我开通镜像容器服务的密码！
+  6.2 创建镜像的标签
+      $ sudo docker tag [ImageId] registry.cn-hangzhou.aliyuncs.com/northcastle/whcdockerimages:[镜像版本号]
+      $ sudo docker tag mytomcat8.5:1.1 registry.cn-hangzhou.aliyuncs.com/northcastle/whcdockerimages:1.1.1
+                        我本地的镜像和标签                                             传到仓库中之后的标签
+  6.3 推送到阿里云仓库中    
+     $ sudo docker push registry.cn-hangzhou.aliyuncs.com/northcastle/whcdockerimages:[镜像版本号]
+     $ sudo docker push registry.cn-hangzhou.aliyuncs.com/northcastle/whcdockerimages:1.1.1
+                                                                     这个版本号就是上面自己定义的那个版本号
+                                                                     
+ 7.push完成之后可以进行搜索查看到刚才push上去的镜像
+   7.1 在镜像搜索中 输入仓库的名称 whcdockerimages
+   7.2 就可以看到自己的仓库
+   7.3 点进去就可以看到自己的标签镜像版本号 1.1.1 证明上传成功了
+   
+   
+8.补充 : 从阿里云的仓库中拉取镜像下来
+  8.1 通过第七步可以找到我们推送上去的镜像
+  8.2 执行命令拉取镜像
+      $sudo docker pull registry.cn-hangzhou.aliyuncs.com/northcastle/whcdockerimages:1.1.1
+                                                                     仓库的名称        镜像的版本号
+                                                                     
+  【注】：上述操作在阿里云的仓库那里面都有详细的步骤教程，可以根据那个提示来进行操作！
